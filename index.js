@@ -35,13 +35,10 @@ async function run() {
         })
         app.get("/cycles/:id", async (req, res) => {
             const id = req.params.id
-            console.log(id);
 
             const query = { _id: ObjectId(id) }
-            console.log(query);
 
             const result = await cyclescollection.findOne(query);
-            console.log(result);
             res.json(result);
 
         })
@@ -53,19 +50,57 @@ async function run() {
             res.json(result);
 
         })
+        //get All orders
         app.get("/orders", async (req, res) => {
-            const email = req.query.email;
-            const query = { email: email };
-            const result = await ordersdatacollection.findOne(query)
+            const cursor = await ordersdatacollection.find({})
+            const result = await cursor.toArray()
             console.log(result);
             res.json(result);
 
         })
+        //get order by email
+        app.get("/orders", async (req, res) => {
+            const email = req.query.email;
+            console.log(email)
+            const query = { email: email };
+            //  console.log(query)
+            const cursor = await ordersdatacollection.find(query)
+            const result = await cursor.toArray()
+            console.log(result);
+            res.json(result);
+
+        })
+        //post a order
         app.post("/orders", async (req, res) => {
             const order = req.body;
             console.log(order);
             const result = await ordersdatacollection.insertOne(order)
             console.log(result);
+            res.json(result);
+
+        })
+        // delete an order item
+        app.delete("/orders/:id", async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = { _id: ObjectId(id) }
+            console.log(query);
+            const result = await ordersdatacollection.deleteOne(query)
+            //  console.log("counted", result);
+            res.json(result);
+
+        })
+        app.put("/orders/:id", async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const doc = {
+                $set: {
+                    status: 200
+                }
+            }
+            const result = await ordersdatacollection.updateOne(filter, doc, options)
+            console.log("counted", result);
             res.json(result);
 
         })
