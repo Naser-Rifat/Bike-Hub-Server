@@ -140,6 +140,7 @@ async function run() {
             let IsAdmin = false;
             const user = await userdatacollection.findOne(filter)
             if (user?.role === 'admin') {
+
                 IsAdmin = true;
 
 
@@ -148,6 +149,7 @@ async function run() {
             res.json({ admin: IsAdmin });
 
         })
+
 
         app.put("/users/admin", async (req, res) => {
             const user = req.body;
