@@ -149,8 +149,8 @@ async function run() {
             const email = req.params.email;
             //    console.log(email);
             const filter = { email: email }
-            let IsAdmin = false;
             const user = await userdatacollection.findOne(filter)
+            let IsAdmin = false;
             if (user?.role === 'admin') {
 
                 IsAdmin = true;
