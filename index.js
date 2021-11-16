@@ -69,18 +69,10 @@ async function run() {
 
         })
 
-        //get All orders
-        app.get("/orders", async (req, res) => {
-            const cursor = await ordersdatacollection.find({})
-            const result = await cursor.toArray()
-            //    console.log(result);
-            res.json(result);
 
-        })
-        //get order by email
         app.get("/orders", async (req, res) => {
             const email = req.query.email;
-            //   console.log(email)
+            console.log(email)
             const query = { email: email };
             //  console.log(query)
             const cursor = await ordersdatacollection.find(query)
@@ -165,17 +157,10 @@ async function run() {
 
         app.put("/users/admin", async (req, res) => {
             const user = req.body;
-            //  console.log(user);
             const filter = { email: user?.email }
             const doc = { $set: { role: "admin" } }
-            //let IsAdmin = false;
             const result = await userdatacollection.updateOne(filter, doc)
-            // if (role === 'admin') {
-            //     IsAdmin = true;
 
-            // }
-            //  console.log(result);
-            //res.json({ admin: IsAdmin });
             res.json(result);
 
 
