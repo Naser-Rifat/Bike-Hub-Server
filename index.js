@@ -69,7 +69,18 @@ async function run() {
 
         })
 
+        // get All orders
+        app.get("/orders/all", async (req, res) => {
+            const cursor = await ordersdatacollection.find({})
+            const result = await cursor.toArray()
+            //   console.log(result);
+            res.json(result);
 
+        })
+
+
+
+        //get order by email
         app.get("/orders", async (req, res) => {
             const email = req.query.email;
             console.log(email)
