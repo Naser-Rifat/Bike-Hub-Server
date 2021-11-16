@@ -51,9 +51,7 @@ async function run() {
         // add cycles info
         app.post("/cycles", async (req, res) => {
             const cycle = req.body;
-            //  console.log(cycle);
             const result = await cyclescollection.insertOne(cycle)
-            // console.log(result);
             res.json(result);
 
         })
@@ -73,7 +71,6 @@ async function run() {
         app.get("/orders/all", async (req, res) => {
             const cursor = await ordersdatacollection.find({})
             const result = await cursor.toArray()
-            //   console.log(result);
             res.json(result);
 
         })
@@ -88,7 +85,7 @@ async function run() {
             //  console.log(query)
             const cursor = await ordersdatacollection.find(query)
             const result = await cursor.toArray()
-            //   console.log(result);
+
             res.json(result);
 
         })
@@ -97,12 +94,11 @@ async function run() {
         //post a order
         app.post("/orders", async (req, res) => {
             const order = req.body;
-            //  console.log(order);
             const result = await ordersdatacollection.insertOne(order)
-            // console.log(result);
             res.json(result);
 
         })
+
         // delete an order item
         app.delete("/orders/:id", async (req, res) => {
             const id = req.params.id;
@@ -113,7 +109,10 @@ async function run() {
             console.log("counted", result);
             res.json(result);
 
+
         })
+
+
         app.put("/orders/:id", async (req, res) => {
             const id = req.params.id
             const filter = { _id: ObjectId(id) }
@@ -129,67 +128,66 @@ async function run() {
 
         })
 
+
+        //make a api for add user bu registration form
         app.post("/users", async (req, res) => {
             const user = req.body;
-            //    console.log(user);
             const result = await userdatacollection.insertOne(user)
-            //    console.log(result);
             res.json(result);
 
         })
+
+        //make a api for add user of google login
         app.put("/users", async (req, res) => {
             const user = req.body;
-            //   console.log(user);
             const filter = { email: user?.email }
             const options = { upsert: true };
             const doc = { $set: user }
             const result = await userdatacollection.updateOne(filter, doc, options)
-            //   console.log(result);
             res.json(result);
 
         })
+
+        //make a api for query orders of individual user
         app.get("/users/:email", async (req, res) => {
             const email = req.params.email;
-            //    console.log(email);
             const filter = { email: email }
             const user = await userdatacollection.findOne(filter)
             let IsAdmin = false;
             if (user?.role === 'admin') {
-
                 IsAdmin = true;
-
-
             }
-            //  console.log(user);
             res.json({ admin: IsAdmin });
 
         })
 
 
+
+        //make a api for add an admin
         app.put("/users/admin", async (req, res) => {
-            const user = req.body;
+            const user = req.body
+            console.log(user.email)
             const filter = { email: user?.email }
-            const doc = { $set: { role: "admin" } }
-            const result = await userdatacollection.updateOne(filter, doc)
-
-            res.json(result);
-
-
+            const doc = { $set: { role: 'admin' } }
+            const result = await userdatacollection.updateOne(filter, doc);
+            console.log(result)
+            res.json(result)
         })
-        //add review
+
+
+        // make a api for insert review data
         app.post("/reviews", async (req, res) => {
             const review = req.body;
-            //  console.log(review);
             const result = await reviewerdatacollection.insertOne(review)
 
-            //  console.log(result);
             res.json(result);
 
         })
+
+        //make a api for showing reviews data
         app.get("/reviews", async (req, res) => {
             const query = await reviewerdatacollection.find({});
             const result = await query.toArray();
-            // console.log(result);
             res.json(result);
 
         })
